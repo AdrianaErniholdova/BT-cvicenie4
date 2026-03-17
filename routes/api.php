@@ -18,3 +18,9 @@ Route::get('users/{user}/notes/pinned', [NoteController::class, 'userPinnedNotes
 
 Route::apiResource('categories', CategoryController::class);
 
+Route::patch('notes/{id}/pin', [NoteController::class, 'pin']);
+Route::patch('notes/{id}/unpin', [NoteController::class, 'unpin']);
+
+Route::patch('notes/{id}/publish', [NoteController::class, 'publish']);
+Route::patch('notes/{id}/archive', [NoteController::class, 'archive']);
+
