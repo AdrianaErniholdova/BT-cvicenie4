@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Category;
+use App\Models\Note;
 use Illuminate\Http\Response;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -29,20 +30,29 @@ class CategoryController extends Controller
      */
     public function store(Request $request)
     {
-        /*DB::table('categories')->insert([
-            'name' => $request->name,
-            'created_at' => now(),
-            'updated_at' => now(),
-        ]);*/
+        $validated = $request->validate([
+            'name' => ['required', 'string', 'max:255', 'unique:categories,name'],
+            'color' => ['required', 'string', 'max:255'],
+        ]);
+
         $category = Category::create([
-            'name' => $request->name,
-            'color' => $request->color
+            'name' => $validated['name'],
         ]);
 
         return response()->json([
             'message' => 'Kategória bola úspešne vytvorená.',
             'category' => $category
         ], Response::HTTP_CREATED);
+
+        /*DB::table('categories')->insert([
+            'name' => $request->name,
+            'created_at' => now(),
+            'updated_at' => now(),
+        ]);
+        $category = Category::create([
+            'name' => $request->name,
+            'color' => $request->color
+        ]);*/
     }
 
     /**
@@ -69,9 +79,6 @@ class CategoryController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        /*$category = DB::table('categories')
-            ->where('id', $id)
-            ->first();*/
         $category = Category::find($id);
 
         if (!$category) {
@@ -80,21 +87,35 @@ class CategoryController extends Controller
             ], Response::HTTP_NOT_FOUND);
         }
 
+        $validated = $request->validate([
+            'name' => ['sometimes', 'string', 'max:255', 'unique:categories,name,' . $id],
+            'color' => ['sometimes', 'string', 'max:255'],
+        ]);
+
+        $category->update($validated);
+
+        return response()->json([
+            'message' => 'Kategória bola úspešne aktualizovaná.',
+            'category' => $category
+        ], Response::HTTP_OK);
+
+        /*$category = DB::table('categories')
+            ->where('id', $id)
+            ->first();*/
+
         /*DB::table('categories')
             ->where('id', $id)
             ->update([
                 'name' => $request->name,
                 'updated_at' => now(),
             ]);*/
+
+        /*$category = Category::find($id);
+
         $category->update([
             'name' => $request->name,
             'color' => $request->color
-        ]);
-
-        return response()->json([
-            'message' => 'Kategória bola úspešne aktualizovaná.',
-            'category' => $category
-        ], Response::HTTP_OK);
+        ]);*/
     }
 
     /**

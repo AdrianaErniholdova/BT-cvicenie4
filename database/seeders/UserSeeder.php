@@ -5,6 +5,7 @@ namespace Database\Seeders;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
+use App\Models\User;
 
 class UserSeeder extends Seeder
 {
@@ -13,87 +14,33 @@ class UserSeeder extends Seeder
      */
     public function run(): void
     {
-        DB::table('users')->insert([
-            [
+        {
+            User::create([
                 'first_name' => 'Pán',
                 'last_name' => 'Admin',
                 'email' => 'admin@ukf.sk',
-                'password' => Hash::make('123'),
+                'password' => '123',
                 'role' => 'admin',
                 'premium_until' => null,
-                'created_at' => now(),
-                'updated_at' => now(),
-            ],
-            [
+            ]);
+
+            User::create([
                 'first_name' => 'Dávid',
                 'last_name' => 'Držík',
                 'email' => 'ddrzik@ukf.sk',
-                'password' => Hash::make('456'),
+                'password' => '456',
                 'role' => 'user',
                 'premium_until' => now()->addDays(30),
-                'created_at' => now(),
-                'updated_at' => now(),
-            ],
-            [
+            ]);
+
+            User::create([
                 'first_name' => 'Jozef',
                 'last_name' => 'Kapusta',
                 'email' => 'jkapusta@ukf.sk',
-                'password' => Hash::make('789'),
+                'password' => '789',
                 'role' => 'user',
                 'premium_until' => null,
-                'created_at' => now(),
-                'updated_at' => now(),
-            ],
-            [
-                'first_name' => 'Jožko',
-                'last_name' => 'Mrkvička',
-                'email' => 'jmrkvicka@ukf.sk',
-                'password' => Hash::make('abc'),
-                'role' => 'user',
-                'premium_until' => null,
-                'created_at' => now(),
-                'updated_at' => now(),
-            ],
-            [
-                'first_name' => 'Jozef',
-                'last_name' => 'Mak',
-                'email' => 'jmak@ukf.sk',
-                'password' => Hash::make('def'),
-                'role' => 'user',
-                'premium_until' => null,
-                'created_at' => now(),
-                'updated_at' => now(),
-            ],
-            [
-                'first_name' => 'Hana',
-                'last_name' => 'Kováčová',
-                'email' => 'hkovacova@ukf.sk',
-                'password' => Hash::make('ghi'),
-                'role' => 'user',
-                'premium_until' => null,
-                'created_at' => now(),
-                'updated_at' => now(),
-            ],
-            [
-                'first_name' => 'Juraj',
-                'last_name' => 'Jánošik',
-                'email' => 'jjanosik@ukf.sk',
-                'password' => Hash::make('jkl'),
-                'role' => 'user',
-                'premium_until' => null,
-                'created_at' => now(),
-                'updated_at' => now(),
-            ],
-            [
-                'first_name' => 'Milan',
-                'last_name' => 'Lasica',
-                'email' => 'mlasica@ukf.sk',
-                'password' => Hash::make('mno'),
-                'role' => 'user',
-                'premium_until' => null,
-                'created_at' => now(),
-                'updated_at' => now(),
-            ],
-        ]);
+            ]);
+        }
     }
 }
