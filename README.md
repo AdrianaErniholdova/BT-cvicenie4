@@ -1,3 +1,8 @@
+Cvicenie 7:
+<img width="1421" height="891" alt="Screenshot 2026-04-03 095729" src="https://github.com/user-attachments/assets/9995563f-cae9-4f86-af8b-30f7173a6aae" />
+<img width="1394" height="560" alt="Screenshot 2026-04-03 095151" src="https://github.com/user-attachments/assets/cc78d7e2-4442-4d02-989f-7ae22920310c" />
+<img width="1424" height="682" alt="Screenshot 2026-04-03 095535" src="https://github.com/user-attachments/assets/d8783a6b-2944-492d-bb28-43450eb9aff2" />
+
 Cvicenie 6:
 <img width="1494" height="1015" alt="Screenshot 2026-03-25 155432" src="https://github.com/user-attachments/assets/794001df-5255-497e-964f-0eda375909ca" />
 <img width="1451" height="436" alt="Screenshot 2026-03-25 164514" src="https://github.com/user-attachments/assets/b9dec022-9bee-4dbb-b38b-83de60bd107c" />
