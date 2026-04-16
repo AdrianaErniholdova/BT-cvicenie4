@@ -39,7 +39,7 @@ class Note extends Model
 
     public function tasks(): HasMany
     {
-        return $this->HasMany(Task::class);
+        return $this->hasMany(Task::class);
     }
 
     public function comments(): MorphMany
@@ -84,5 +84,11 @@ class Note extends Model
     {
         $this->status = 'archived';
         return $this->save();
+    }
+
+    public function attachments(): MorphMany
+    {
+        return $this->morphMany(Attachment::class, 'attachable')
+            ->where('collection', 'attachment');
     }
 }

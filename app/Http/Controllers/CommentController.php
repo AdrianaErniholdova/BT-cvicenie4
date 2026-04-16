@@ -1,0 +1,111 @@
+<?php
+
+namespace App\Http\Controllers;
+
+use App\Models\Comment;
+use App\Models\Note;
+use App\Models\Task;
+use Illuminate\Http\Response;
+use Illuminate\Http\Request;
+
+class CommentController extends Controller
+{
+    public function indexForNote(Note $note)
+    {
+        $this->authorize('viewAny', [Comment::class, $note]);
+
+        $comments = $note->comments()->with('user:id,first_name,last_name')->get();
+
+        return response()->json(['comments' => $comments], Response::HTTP_OK);
+    }
+
+    public function indexForTask(Note $note, Task $task)
+    {
+        $this->authorize('viewAny', [Comment::class, $note]);
+
+        $comments = $task->comments()->with('user:id,first_name,last_name')->get();
+
+        return response()->json(['comments' => $comments], Response::HTTP_OK);
+    }
+
+    public function storeForNote(Request $request, Note $note)
+    {
+        $this->authorize('create', [Comment::class, $note]);
+
+        $validated = $request->validate([
+            'body' => ['required', 'string', 'max:1000'],
+        ]);
+
+        $comment = $note->comments()->create([
+            'user_id' => $request->user()->id,
+            'body'    => $validated['body'],
+        ]);
+
+        return response()->json([
+            'message' => 'Komentár bol pridaný.',
+            'comment' => $comment->load('user:id,first_name,last_name'),
+        ], Response::HTTP_CREATED);
+    }
+
+    public function storeForTask(Request $request, Note $note, Task $task)
+    {
+        $this->authorize('create', [Comment::class, $note]);
+
+        $validated = $request->validate([
+            'body' => ['required', 'string', 'max:1000'],
+        ]);
+
+        $comment = $task->comments()->create([
+            'user_id' => $request->user()->id,
+            'body'    => $validated['body'],
+        ]);
+
+        return response()->json([
+            'message' => 'Komentár bol pridaný.',
+            'comment' => $comment->load('user:id,first_name,last_name'),
+        ], Response::HTTP_CREATED);
+    }
+
+    public function update(Request $request, string $id)
+    {
+        $comment = Comment::find($id);
+
+        if (!$comment) {
+            return response()->json([
+                'message' => 'Komentár nenájdený.'
+            ], Response::HTTP_NOT_FOUND);
+        }
+
+        $this->authorize('update', $comment);
+
+        $validated = $request->validate([
+            'body' => ['required', 'string', 'max:1000'],
+        ]);
+
+        $comment->update($validated);
+
+        return response()->json([
+            'message' => 'Komentár bol upravený.',
+            'comment' => $comment->load('user:id,first_name,last_name'),
+        ], Response::HTTP_OK);
+    }
+
+    public function destroy(string $id)
+    {
+        $comment = Comment::find($id);
+
+        if (!$comment) {
+            return response()->json([
+                'message' => 'Komentár nenájdený.'
+            ], Response::HTTP_NOT_FOUND);
+        }
+
+        $this->authorize('delete', $comment);
+
+        $comment->delete();
+
+        return response()->json([
+            'message' => 'Komentár bol odstránený.',
+        ], Response::HTTP_OK);
+    }
+}

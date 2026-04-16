@@ -17,9 +17,9 @@ class Comment extends Model
         'body',
     ];
 
-    public function user(): BelongsToMany
+    public function user(): BelongsTo
     {
-        return $this->belongsToMany(User::class)->withTimestamps();
+        return $this->belongsTo(User::class)->withTimestamps();
     }
 
     public function commentable(): MorphTo

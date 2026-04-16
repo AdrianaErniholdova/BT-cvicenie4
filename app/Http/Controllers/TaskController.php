@@ -12,6 +12,8 @@ class TaskController extends Controller
 {
     public function index(Note $note)
     {
+        $this->authorize('view', $note);
+
         $tasks = $note->tasks()->orderBy('due_at')->get();
 
         return response()->json([
@@ -22,6 +24,8 @@ class TaskController extends Controller
 
     public function store(Request $request, Note $note)
     {
+        $this->authorize('create', [Task::class, $note]);
+
         $validated = $request->validate([
             'title' => ['required', 'string', 'max:255'],
             'is_done' => ['required', 'boolean'],
@@ -38,6 +42,8 @@ class TaskController extends Controller
 
     public function show(Note $note, $taskId)
     {
+        $this->authorize('view', $note);
+
         $task = $note->tasks()->find($taskId);
 
         if (!$task) {
@@ -45,6 +51,8 @@ class TaskController extends Controller
                 'message' => 'Úloha nenájdená.'
             ], Response::HTTP_NOT_FOUND);
         }
+
+        $this->authorize('view', $task);
 
         return response()->json(['task' => $task], Response::HTTP_OK);
     }
@@ -58,6 +66,8 @@ class TaskController extends Controller
                 'message' => 'Úloha nenájdená.'
             ], Response::HTTP_NOT_FOUND);
         }
+
+        $this->authorize('update', $task);
 
         $validated = $request->validate([
             'title' => ['sometimes', 'string', 'max:255'],
@@ -82,6 +92,8 @@ class TaskController extends Controller
                 'message' => 'Úloha nenájdená.'
             ], Response::HTTP_NOT_FOUND);
         }
+
+        $this->authorize('delete', $task);
 
         $task->delete();
 
